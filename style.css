@@ -1,0 +1,199 @@
+/* ==========================================================================
+   Supermarket Insights Story - Cinematic SCROLL Theme (Stretching Fix)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-font: 'Poppins', sans-serif;
+    --text-light: #f0f0f0;
+    --text-muted: #a0a0a0;
+    --card-bg: rgba(10, 20, 30, 0.55);
+    --glow-color: rgba(0, 195, 255, 0.7);
+    --overlay-gradient: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.85));
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--primary-font);
+    background-color: #05080a;
+    overflow-x: hidden;
+}
+
+/* -------------------------------------------------------------------------- */
+/* SCENE CONTAINERS (The Core Fix is Here)
+/* -------------------------------------------------------------------------- */
+.scene {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center;     /* Center content horizontally */
+    padding: 2rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.scene::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--overlay-gradient);
+    z-index: 1;
+}
+
+/* -- FIX APPLIED HERE -- 
+  This is the content wrapper inside each scene. We control its size and internal layout.
+*/
+.scene > div {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    
+    /* --- Horizontal Control (Prevents stretching on wide screens) --- */
+    width: 90%;
+    max-width: 1200px; /* Content will never be wider than 1200px */
+
+    /* --- Vertical Control (Prevents stretching on tall screens) --- */
+    max-height: 95vh;
+
+    /* --- Internal Layout Control (For consistent spacing) --- */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Creates perfect spacing between title, subtitle, cards, and chart */
+}
+
+/* -------------------------------------------------------------------------- */
+/* BACKGROUND IMAGES (Keep as is)
+/* -------------------------------------------------------------------------- */
+#scene-0 { background-image: url('https://i.pinimg.com/1200x/64/d6/ed/64d6ed91ea34b7fe0780dd28981dd909.jpg'); }
+
+
+
+/* -------------------------------------------------------------------------- */
+/* ANIMATED SCROLL INDICATOR (Keep as is)
+/* -------------------------------------------------------------------------- */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+
+#scene-0::after {
+    content: '╲╱';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 10;
+    animation: bounce 2.5s infinite;
+}
+
+/* -------------------------------------------------------------------------- */
+/* TEXT & COMPONENT STYLING (Minor adjustments for new layout)
+/* -------------------------------------------------------------------------- */
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(60px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.scene-title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(0,0,0,0.7);
+    animation: slideInUp 1s ease-out;
+    background: linear-gradient(180deg, #ffffff 70%, #d0d0d0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    margin-bottom: 0; /* Let 'gap' handle spacing */
+}
+
+.scene-subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin-inline: auto;
+    animation: slideInUp 1s 0.2s ease-out backwards;
+    margin-bottom: 0; /* Let 'gap' handle spacing */
+}
+
+.kpi-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: slideInUp 1s 0.4s ease-out backwards;
+}
+
+.kpi-card:hover {
+    transform: scale(1.04) translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    border-color: var(--glow-color);
+}
+
+.kpi-card .card-title {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-card .card-text {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.story-chart {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: slideInUp 1s 0.6s ease-out backwards;
+    width: 100%;
+    /* ADDED: A max-height prevents the chart from being too tall on some screens */
+    max-height: 50vh; 
+}
+
+/* -------------------------------------------------------------------------- */
+/* RESPONSIVE OPTIMIZATION (No major changes needed here)
+/* -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+    .scene-title { font-size: 2.5rem; }
+    .scene-subtitle { font-size: 1rem; }
+}
+
+@media (max-width: 768px) {
+    .scene { background-attachment: scroll; } /* 'fixed' is often jittery on mobile */
+    .scene-title { font-size: 2rem; }
+    .scene-subtitle { font-size: 0.95rem; }
+    .kpi-card { margin-bottom: 1rem; padding: 1.2rem; }
+    .kpi-card .card-text { font-size: 1.8rem; }
+}
